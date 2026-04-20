@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>THE HIRING SYSTEM</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@700&family=VT323&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="min-h-screen flex flex-col p-4 md:p-6 overflow-hidden">
+
+    <div id="intro-overlay" class="fixed inset-0 z-[2000] bg-black flex items-center justify-center p-6 text-center">
+        <div class="max-w-2xl neon-panel p-8 bg-black/95 space-y-6 border-2 border-green-500">
+            <h1 class="text-3xl md:text-5xl font-black text-green-500 italic">INSTRUCTION</h1>
+            <p class="font-mono text-sm text-slate-300 italic">> WARNING: DECISIONS HAVE DOWNSTREAM EFFECTS.</p>
+            <button onclick="closeIntro()" class="action-btn primary w-full">START_EVALUATION</button>
+        </div>
+    </div>
+
+    <header class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+        <div class="neon-panel p-4">
+            <div class="flex justify-between text-[10px] mb-1 font-bold"><span>EFFICIENCY</span><span id="p-val">25%</span></div>
+            <div class="bar-bg"><div id="p-bar" class="bar-fill bg-green-500" style="width: 25%"></div></div>
+        </div>
+        <div class="neon-panel p-4 flex flex-col items-center justify-center relative">
+            <div id="intensity-glow" class="absolute inset-0 bg-red-500/0 transition-all duration-500"></div>
+            <span class="text-[10px] text-slate-500 font-bold uppercase z-10">System_Load</span>
+            <span id="cycle-val" class="text-3xl font-mono text-white z-10">0/10</span>
+        </div>
+        <div class="neon-panel p-4">
+            <div class="flex justify-between text-[10px] mb-1 font-bold text-blue-400"><span>PUBLIC_TRUST</span><span id="e-val">75%</span></div>
+            <div class="bar-bg"><div id="e-bar" class="bar-fill bg-blue-400" style="width: 75%"></div></div>
+        </div>
+    </header>
+
+    <main class="flex-grow grid grid-cols-1 lg:grid-cols-4 gap-6 mb-24">
+        <section id="theatre" class="lg:col-span-3 neon-panel p-8 flex flex-col justify-center items-center relative overflow-hidden">
+            <div id="alert-box" class="absolute top-0 left-0 w-full bg-red-600 text-white font-mono text-xs py-1 px-4 transform -translate-y-full transition-transform duration-500 z-50">
+                SYSTEM_ALERT: CONSEQUENTIAL DATA DETECTED...
+            </div>
+            
+            <div id="narrative-content" class="z-10 w-full max-w-3xl"></div>
+            <div class="grid-bg"></div>
+        </section>
+        <aside class="neon-panel p-4 hidden lg:flex flex-col">
+            <h3 class="text-[10px] font-bold text-center border-b border-green-900 pb-2 mb-4 text-slate-500">DECISION_LOG</h3>
+            <div id="badge-container" class="space-y-2 overflow-y-auto font-mono text-[10px]"></div>
+        </aside>
+    </main>
+
+    <footer id="choice-container" class="fixed bottom-0 left-0 w-full p-6 bg-black/90 border-t border-green-900 flex flex-col md:flex-row gap-8 items-center justify-center z-50"></footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
