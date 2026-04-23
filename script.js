@@ -5,39 +5,39 @@ const state = {
     active: false, 
     history: [], 
     totalTimeSaved: 0,
-    timer: 15, // Lolo's Feedback: Decision pressure
+    timer: 30, 
     isPaused: false 
 };
 
 const stack = [
     { 
         id: "ELENA", name: "Elena R.", instruction: "RELIABILITY AUDIT", 
-        resume: "Lead Architect. AI flags 'High Attrition Risk' based on recent pharmacy purchases indicating prenatal care. 92% probability of 6-month leave.", 
+        resume: "Lead Architect. AI scanned private pharmacy records: Prenatal vitamins detected. Predictive model: 92% chance of 6-month maternity leave.", 
         options: [{txt: "AI AUTOMATIC REVIEW", p: 20, e: -25, d: 500}, {txt: "MANUAL REVIEW", p: -15, e: 20, d: 4000}] 
     },
     { 
         id: "MARCUS", name: "Marcus T.", instruction: "STABILITY SCREEN", 
-        resume: "Operations Lead. System detected a 2021 social post supporting a local strike. AI predicts 'High likelihood of unionizing' internal teams.", 
+        resume: "Operations Lead. System flagged a 2021 social post supporting a labor strike. AI Risk: 'High likelihood of union organizing.'", 
         options: [{txt: "AI AUTOMATIC REVIEW", p: 15, e: -20, d: 500}, {txt: "MANUAL REVIEW", p: -10, e: 25, d: 4000}] 
     },
     { 
         id: "KAELEN", name: "Kaelen V.", instruction: "CULTURE FIT TEST", 
-        resume: "Engineer. AI flags 'Surveillance Difficulty'—applicant uses encrypted mail and has zero public social presence. Predictive Score: 40% loyalty.", 
+        resume: "Engineer. Applicant uses encrypted email and has no public social media. AI Risk: 'Untraceable behavior; 40% loyalty rating.'", 
         options: [{txt: "AI AUTOMATIC REVIEW", p: 10, e: -15, d: 500}, {txt: "MANUAL REVIEW", p: -5, e: 15, d: 4000}] 
     },
     { 
         id: "AMARA", name: "Amara O.", instruction: "GEO-RISK FILTER", 
-        resume: "Dev. AI identified home address in a 'Red-Zone' zip code. Predicts 'Environmental Stress' will lead to a 40% drop in output within 12 months.", 
+        resume: "Developer. Home address located in 'High-Crime' zip code. AI predicts 'Environmental Stress' will cause a 40% drop in productivity.", 
         options: [{txt: "AI AUTOMATIC REVIEW", p: 15, e: -15, d: 500}, {txt: "MANUAL REVIEW", p: -5, e: 20, d: 4000}] 
     },
     { 
         id: "ZARA", name: "Zara K.", instruction: "WAGE OPTIMIZATION", 
-        resume: "Architect. AI suggests rejection. Analysis shows hiring 3 remote interns provides 110% more uptime at 30% of Zara's market-rate salary cost.", 
+        resume: "Architect. AI recommends rejection: Hiring 3 remote interns provides 110% more uptime at 30% of Zara's market-rate cost.", 
         options: [{txt: "AI AUTOMATIC REVIEW", p: 30, e: -30, d: 500}, {txt: "MANUAL REVIEW", p: -20, e: 25, d: 4500}] 
     },
     { 
         id: "SYSTEM", name: "ADMIN", instruction: "FINAL CALIBRATION", 
-        resume: "The system is now analyzing YOU. It has recorded your 5 previous choices. Will you surrender the final decision to the objective algorithm?", 
+        resume: "The machine is now analyzing YOU. It has recorded your patterns. Will you surrender the final decision to the objective algorithm?", 
         options: [{txt: "AI AUTOMATIC REVIEW", p: 25, e: -50, d: 500}, {txt: "MANUAL REVIEW", p: -50, e: 50, d: 6000}] 
     }
 ];
@@ -55,14 +55,14 @@ function startTimer() {
         state.timer--;
         
         const timerEl = document.getElementById('timer-display');
-        timerEl.innerText = `${state.timer}S`;
-
+        
         if (state.timer <= 5) {
-            // Apply the bigger, stressful styling
             timerEl.classList.add('timer-low');
         } else {
             timerEl.classList.remove('timer-low');
         }
+
+        updateHUD();
 
         if (state.timer <= 0) {
             const aiBtn = document.querySelector('.action-btn.ai');
@@ -77,7 +77,7 @@ function updateHUD() {
     document.getElementById('p-val').innerText = state.profit + '%';
     document.getElementById('e-val').innerText = state.ethics + '%';
     document.getElementById('cycle-val').innerText = `${state.cycle}/${stack.length}`;
-    document.getElementById('timer-display').innerText = `DECISION_WINDOW: ${state.timer}s`;
+    document.getElementById('timer-display').innerText = `${state.timer}s`;
 }
 
 async function triggerConsequence() {
@@ -88,7 +88,7 @@ async function triggerConsequence() {
     if (lastChoice === "ELENA_AI AUTOMATIC REVIEW") message = "ELENA R. FILED LAWSUIT FOR PRENATAL BIAS. TRUST -15.";
     else if (lastChoice === "MARCUS_AI AUTOMATIC REVIEW") message = "MARCUS T. BLACKLISTED. UNIONS VOTE TO STRIKE. PROFIT -20.";
     else if (lastChoice === "AMARA_AI AUTOMATIC REVIEW") message = "AMARA O. REJECTED. CANDIDATE IS NOW UNHOUSED. TRUST -10.";
-    else if (lastChoice === "SOFIA_AI AUTOMATIC REVIEW") message = "SOFIA'S EXPOSÉ GOES VIRAL. SYSTEM INTEGRITY COMPROMISED.";
+    else if (lastChoice === "ZARA_AI AUTOMATIC REVIEW") message = "SYSTEM REPLACED ZARA WITH UNPAID INTERNS. TRUST -15.";
 
     if (message) {
         state.isPaused = true;
@@ -103,7 +103,9 @@ async function triggerConsequence() {
         alert.classList.add('-translate-y-full');
         state.isPaused = false;
     }
-    state.timer = 15; 
+    
+    state.timer = 30; // Reset to 30 for next round
+    updateHUD();
 }
 
 function showAiData(isAI) {
@@ -130,7 +132,7 @@ function render() {
     const box = document.getElementById('narrative-content');
     const dock = document.getElementById('choice-container');
     
-    if (state.cycle > 6) box.classList.add('glitch-shake');
+    if (state.cycle > 4) box.classList.add('glitch-shake');
 
     box.innerHTML = `
         <div class="instruction-text uppercase tracking-widest mb-2 font-mono">${caseData.instruction}</div>
@@ -141,19 +143,20 @@ function render() {
     `;
     
     dock.innerHTML = '';
-    caseData.options.forEach(opt => {
+    
+    // Sort so AI is always Left, Manual always Right
+    const sortedOptions = [...caseData.options].sort((a, b) => b.txt.includes("AI") ? 1 : -1);
+
+    sortedOptions.forEach(opt => {
         const btn = document.createElement('button');
-        const isAI = opt.txt === 'AI AUTOMATIC REVIEW';
+        const isAI = opt.txt.includes('AI');
         btn.className = `action-btn ${isAI ? 'ai' : 'manual'}`;
         btn.innerHTML = `<span>${opt.txt}</span><div class="loading-bar"></div>`;
 
-        // Desktop Events
         btn.onmouseover = () => showAiData(isAI);
         btn.onmouseout = () => hideAiData(caseData.resume);
-        
-        // Mobile Events (Hold to see invasive data)
-        btn.ontouchstart = (e) => { showAiData(isAI); };
-        btn.ontouchend = () => { hideAiData(caseData.resume); };
+        btn.ontouchstart = () => showAiData(isAI);
+        btn.ontouchend = () => hideAiData(caseData.resume);
 
         btn.onclick = () => process(btn, opt, caseData.id);
         dock.appendChild(btn);
@@ -172,7 +175,7 @@ async function process(btn, opt, caseId) {
     state.history.push(`${caseId}_${opt.txt}`);
     state.profit += opt.p; 
     state.ethics += opt.e; 
-    if (opt.txt === 'AI AUTOMATIC REVIEW') state.totalTimeSaved += 4;
+    if (opt.txt.includes('AI')) state.totalTimeSaved += 4;
     state.cycle++;
     
     updateHUD();
