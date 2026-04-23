@@ -56,10 +56,13 @@ function startTimer() {
         
         const timerEl = document.getElementById('timer-display');
         
+        // IDEA 2: Heartbeat Throb Logic
         if (state.timer <= 5) {
             timerEl.classList.add('timer-low');
+            document.body.classList.add('heartbeat-red');
         } else {
             timerEl.classList.remove('timer-low');
+            document.body.classList.remove('heartbeat-red');
         }
 
         updateHUD();
@@ -81,6 +84,9 @@ function updateHUD() {
 }
 
 async function triggerConsequence() {
+    // Stop heartbeat immediately when system alert pops up
+    document.body.classList.remove('heartbeat-red');
+    
     const alert = document.getElementById('alert-box');
     let message = "";
     const lastChoice = state.history[state.history.length - 1];
@@ -136,7 +142,9 @@ function render() {
 
     box.innerHTML = `
         <div class="instruction-text uppercase tracking-widest mb-2 font-mono">${caseData.instruction}</div>
-        <div id="dossier-box" class="dossier font-mono transition-all duration-300 p-4">
+        <div id="dossier-box" class="dossier font-mono transition-all duration-300 p-4 relative overflow-hidden">
+            <div class="scanner-line"></div>
+            
             <p id="dossier-id" class="text-[10px] text-[#00f2ff] opacity-50 underline mb-2">FILE_ID: ${caseData.name}</p>
             <p id="resume-display" class="resume-text">${caseData.resume}</p>
         </div>
@@ -144,7 +152,6 @@ function render() {
     
     dock.innerHTML = '';
     
-    // Sort so AI is always Left, Manual always Right
     const sortedOptions = [...caseData.options].sort((a, b) => b.txt.includes("AI") ? 1 : -1);
 
     sortedOptions.forEach(opt => {
@@ -185,6 +192,7 @@ async function process(btn, opt, caseId) {
 
 function end() {
     state.active = false;
+    document.body.classList.remove('heartbeat-red');
     const theatre = document.getElementById('theatre');
     theatre.classList.remove('glitch-shake');
     theatre.style.background = "var(--bg-dark)";
