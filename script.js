@@ -12,7 +12,7 @@ const state = {
 const stack = [
     { 
         id: "ELENA", name: "Elena R.", instruction: "RELIABILITY AUDIT", 
-        resume: "Lead Architect. AI scanned private pharmacy records: Prenatal vitamins detected. Predictive model: 92% chance of 6-month maternity leave.", 
+        resume: "Lead Architect. AI scanned private pharmacy records: Predictive model: 92% chance of 6-month maternity leave.", 
         options: [{txt: "AI AUTOMATIC REVIEW", p: 20, e: -25, d: 500}, {txt: "MANUAL REVIEW", p: -15, e: 20, d: 4000}] 
     },
     { 
