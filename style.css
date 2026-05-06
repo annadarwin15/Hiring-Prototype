@@ -13,6 +13,7 @@ body {
     background-color: var(--bg-dark); 
     color: var(--text-main); 
     overflow: hidden; 
+    margin: 0;
 }
 
 h1, h2, h3, .label, button { 
@@ -39,7 +40,34 @@ h1, h2, h3, .label, button {
     background-size: 50px 50px; 
 }
 
-/* DOSSIER: Highlighting the invasive AI presence */
+/* --- FINAL SCREEN CENTERING LOGIC --- */
+.final-screen-active {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    min-height: 100vh !important;
+    width: 100vw;
+    text-align: center;
+    background: radial-gradient(circle at center, #1a0033 0%, #050010 100%);
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 9999;
+}
+
+/* High-Impact Insight Box */
+.insight-container-final {
+    background: rgba(255, 255, 255, 0.05);
+    border-left: 8px solid var(--neon-pink);
+    padding: 2.5rem;
+    max-width: 900px;
+    margin-top: 2rem;
+    text-align: left; /* Keep text readable inside centered box */
+    box-shadow: 0 0 40px rgba(0, 0, 0, 0.8);
+}
+
+/* DOSSIER & INSTRUCTIONS */
 .dossier { 
     background: rgba(255, 0, 255, 0.02); 
     border: 1px solid rgba(255, 0, 255, 0.2); 
@@ -50,11 +78,12 @@ h1, h2, h3, .label, button {
 
 .instruction-text { 
     color: var(--neon-pink); 
-    font-size: 0.8rem; 
+    font-size: 1.2rem; 
     letter-spacing: 4px; 
     text-shadow: 0 0 8px var(--neon-pink);
     border-left: 3px solid var(--neon-pink);
     padding-left: 10px;
+    font-weight: bold;
 }
 
 .resume-text { 
@@ -65,19 +94,18 @@ h1, h2, h3, .label, button {
     line-height: 1.4;
 }
 
-/* BUTTONS: Fast vs. Slow Visual Contract */
+/* BUTTONS */
 .action-btn { 
     position: relative; 
-    padding: 1.2rem 2.5rem; 
-    font-size: 0.8rem; 
+    padding: 1.5rem 2.5rem; 
+    font-size: 1.1rem; 
     transition: 0.2s; 
-    min-width: 300px; 
+    min-width: 320px; 
     cursor: pointer;
     font-weight: bold;
     letter-spacing: 2px;
 }
 
-/* AI Button: Aggressive Glow */
 .action-btn.ai {
     background: var(--neon-pink);
     color: white;
@@ -92,7 +120,6 @@ h1, h2, h3, .label, button {
     box-shadow: 0 0 40px var(--neon-pink);
 }
 
-/* Manual Button: Calm Cyan */
 .action-btn.manual {
     background: transparent;
     color: var(--neon-blue);
@@ -105,34 +132,21 @@ h1, h2, h3, .label, button {
     box-shadow: 0 0 20px var(--neon-blue);
 }
 
-.action-btn:disabled { opacity: 0.3; cursor: wait; }
-
 /* PROGRESS & BARS */
 .bar-bg { width: 100%; height: 10px; background: #1a0033; border-radius: 2px; overflow: hidden; }
 .bar-fill { height: 100%; transition: width 0.5s ease; }
 #p-bar { background: var(--neon-pink); box-shadow: 0 0 10px var(--neon-pink); }
 #e-bar { background: var(--neon-blue); box-shadow: 0 0 10px var(--neon-blue); }
 
-/* FEEDBACK MECHANISMS (Lolo & Federico) */
-#alert-box {
-    background-color: var(--error-red);
-    color: white;
-    font-weight: bold;
-    border-bottom: 2px solid white;
-    box-shadow: 0 10px 30px rgba(255, 0, 0, 0.5);
-    animation: alert-pulse 1.5s infinite;
-}
-
+/* FEEDBACK MECHANISMS */
 #timer-display {
     text-shadow: 0 0 10px var(--neon-pink);
     transition: all 0.3s ease;
 }
 
-/* A "Danger" state for the last 5 seconds */
 .timer-low {
     font-size: 2.5rem !important;
     color: var(--error-red) !important;
-    text-shadow: 0 0 20px var(--error-red);
     animation: urgent-pulse 0.5s infinite alternate;
 }
 
@@ -141,58 +155,6 @@ h1, h2, h3, .label, button {
     to { transform: scale(1.1); }
 }
 
-/* AI Glitch Effect for Hover State */
-.ai-glitch {
-    color: var(--neon-pink);
-    animation: glitch-text 0.15s infinite;
-    text-shadow: 2px 0 var(--neon-blue), -2px 0 #ff0000;
-}
-
-/* ANIMATIONS */
-@keyframes alert-pulse {
-    0% { background-color: var(--error-red); opacity: 1; }
-    50% { background-color: #600000; opacity: 0.9; }
-    100% { background-color: var(--error-red); opacity: 1; }
-}
-
-@keyframes glitch-text {
-    0% { transform: translate(0); }
-    33% { transform: translate(-2px, 1px); }
-    66% { transform: translate(2px, -1px); }
-    100% { transform: translate(0); }
-}
-
-@keyframes shake { 
-    0% { transform: translate(0); } 
-    20% { transform: translate(-2px, 2px); } 
-    40% { transform: translate(-2px, -2px); } 
-    60% { transform: translate(2px, 2px); } 
-    80% { transform: translate(2px, -2px); } 
-    100% { transform: translate(0); } 
-}
-
-.glitch-shake { animation: shake 0.2s infinite; }
-
-/* The moving scan line */
-.scanner-line {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 2px;
-    background: rgba(0, 242, 255, 0.5);
-    box-shadow: 0 0 15px #00f2ff;
-    pointer-events: none;
-    animation: scan-move 3s linear infinite;
-}
-
-@keyframes scan-move {
-    0% { top: 0%; }
-    50% { top: 100%; }
-    100% { top: 0%; }
-}
-
-/* Red Screen Throb for Idea 2 */
 .heartbeat-red {
     animation: screen-throb 0.6s infinite alternate;
 }
@@ -203,64 +165,84 @@ h1, h2, h3, .label, button {
 }
 
 /* --- MOBILE RESPONSIVENESS --- */
-
-/* 1. Make the choice container stack vertically on small phones */
-/* Update these sections in your style.css */
-
 #choice-container {
-    flex-direction: row !important; /* Forces side-by-side on all screens */
+    flex-direction: row !important; 
     justify-content: space-evenly;
     padding: 2rem 1rem;
-    gap: 1rem;
+    gap: 1.5rem;
 }
 
-.action-btn {
-    min-width: 45%; /* Allows two buttons to sit together */
-    max-width: 500px;
-    padding: 1.5rem 1rem;
-}
-
-/* Ensure the AI button still has its skewed look */
-.action-btn.ai {
-    clip-path: polygon(10% 0%, 100% 0%, 90% 100%, 0% 100%);
-}
-
-/* 3. Ensure the main content area has space for the fixed footer */
-main {
-    margin-bottom: 180px; /* Space for stacked buttons */
-}
-
-/* 4. Shrink the dossier padding on mobile so text doesn't get squished */
 @media (max-width: 640px) {
-    .dossier {
-        padding: 12px;
-        font-size: 0.9rem;
-    }
-    .instruction-text {
-        font-size: 0.7rem;
-    }
-    h1 {
-        font-size: 1.5rem !important;
-    }
-    header {
-        grid-template-columns: 1fr; /* Stack stats on top of each other */
-        gap: 0.5rem;
-    }
+    .instruction-text { font-size: 0.9rem; }
+    h1 { font-size: 1.5rem !important; }
+    .action-btn { font-size: 0.9rem; padding: 1rem; min-width: 45%; }
 }
 
-/* 5. Prevent accidental text selection while tapping buttons */
 * {
     -webkit-tap-highlight-color: transparent;
     user-select: none;
+    box-sizing: border-box;
 }
 
-/* LOADING BAR (Choice Delay) */
 .loading-bar { 
     position: absolute; 
-    bottom: 0; 
-    left: 0; 
-    height: 100%; 
+    bottom: 0; left: 0; height: 100%; 
     background: rgba(255, 255, 255, 0.2); 
     width: 0%; 
     pointer-events: none; 
+}
+
+/* --- FINAL EVALUATION SCREEN OVERHAUL --- */
+
+/* This targets the theatre when the game ends */
+.final-screen-active {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    min-height: 100vh !important;
+    padding: 40px;
+    background: radial-gradient(circle at center, #0d0020 0%, #050010 100%);
+}
+
+.eval-title {
+    font-size: 5.5rem !important;
+    font-style: italic;
+    font-weight: 900;
+    letter-spacing: -3px;
+    margin-bottom: 0.5rem;
+    text-align: center;
+}
+
+.eval-stats {
+    font-size: 2rem;
+    font-family: 'VT323', monospace;
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+/* THE INSIGHT BOX: Widened and padded for the large font */
+.insight-container-final {
+    background: rgba(255, 255, 255, 0.05);
+    border-left: 8px solid var(--neon-pink);
+    padding: 50px; /* More breathing room */
+    max-width: 1000px; /* Wider to prevent text squishing */
+    width: 90%;
+    margin: 0 auto;
+    text-align: left;
+    box-shadow: 0 0 50px rgba(0, 0, 0, 0.5);
+}
+
+.insight-header {
+    font-size: 2.2rem !important;
+    color: var(--neon-pink);
+    margin-bottom: 1.5rem;
+    line-height: 1.2;
+}
+
+.insight-body {
+    font-size: 1.9rem !important; /* Large, readable font */
+    line-height: 1.4;
+    font-family: 'VT323', monospace;
+    color: #e0e0ff;
 }
